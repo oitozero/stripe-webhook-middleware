@@ -22,14 +22,15 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-var stripeMiddleware = require('stripe-webhook-middleware');
+var StripeWebhook = require('stripe-webhook-middleware');
+var stripeWebhook = new StripeWebhook({
+  stripeApiKey: 'your-private-api-key'
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/stripe', stripeMiddleware.init(app, {
-  stripeApiKey: 'your-private-api-key'
-}));
+app.post('/stripe', stripeWebhook.middleware);
 
 app.listen(3000);
 ```
